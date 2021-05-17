@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/", [DataController::class, 'index'])
+    ->domain("visual.central.peppsaf");
+Route::delete("/delete-data", [DataController::class, 'destroy'])
+    ->domain('visual.central.peppsaf');
