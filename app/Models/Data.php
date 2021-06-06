@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Data extends Model
 {
     use HasFactory, SoftDeletes;
+    
+    protected $appends = ["delay"];
 
     protected $fillable = [
         "name", "value", "hostname", "namespace", "identifier",
@@ -30,5 +32,10 @@ class Data extends Model
     {
         $attributes['received_at'] = $attributes['received_at'] ?? now();
         parent::__construct($attributes);
+    }
+
+    public function getDelayAttribute()
+    {
+	return $this->received_at->diffInSeconds($this->sent_at);
     }
 }

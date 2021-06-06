@@ -15,7 +15,9 @@ class DataController extends Controller
      */
     public function index()
     {
-        return Data::all();
+	$this->destroy();
+        return response()->json(Data::paginate(5, ["identifier", "namespace", "value", "hostname", "arrived_at", "sent_at", "received_at"]));
+	return Data::paginate();
     }
 
     /**
@@ -25,10 +27,13 @@ class DataController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'data' => ['array', 'required']
+            'data' => ['required']
         ])["data"];
-        $data['received_at'] = now();
-        return Data::create($data);
+
+//	return response()->json(['what' => $data]);
+        $data = json_decode($data, true);
+	$data['received_at'] = now();
+        return response()->json(['data' => Data::create($data)->toArray()]);
     }
 
     /**
@@ -38,7 +43,7 @@ class DataController extends Controller
      */
     public function destroy(): bool
     {
-        Data::query()->where("received_at", now()->subMinutes(10))->delete();
+        Data::query()->where("received_at", '<=', now()->subMinutes(10))->delete();
         return true;
     }
 }
