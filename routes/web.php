@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain("192.168.137.11")->group(function(){
 	Route::get("/all", [DataController::class, 'all']);
+	Route::get("/take/{take}", [DataController::class, 'take']);
 	Route::get("/unseen", [DataController::class, 'unseen']);
 	Route::get("/seen", [DataController::class, 'seen']);
 	Route::get("/delete", [DataController::class, 'destroy']);

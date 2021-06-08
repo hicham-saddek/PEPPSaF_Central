@@ -34,8 +34,19 @@ class DataController extends Controller
     public function all()
     {
         $this->destroy();
-        $data = Data::paginate(15, $this->important_fields);
+        $data = Data::take(20)->get($this->important_fields);
         return response()->json(compact('data'));
+<<<<<<< HEAD
+=======
+    }
+
+    public function take(int $take = 1)
+    {
+	$this->destroy();
+	$data = Data::orderBy("id", "asc")->where('seen', false)->take($take)->get($this->important_fields);
+	$data->each(fn(Data $data) => $data->markAsSeen()->save());
+	return response()->json(compact('data'));
+>>>>>>> cc287f72895a5329419ba78c8083247ec98acd35
     }
 
     /**
@@ -56,7 +67,7 @@ class DataController extends Controller
      */
     public function destroy(): bool
     {
-        Data::query()->where("received_at", '<=', now()->subMinutes($this->max_life))->delete();
+        Data::query()->where("received_at", '<', now()->subMinutes($this->max_life))->delete();
         return true;
     }
 }
