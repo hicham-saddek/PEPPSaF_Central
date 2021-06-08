@@ -12,12 +12,6 @@ class CalculatedDataController extends Controller
         ];
 
     protected int $max_life = 1;
-    
-    public function all(){
-        $this->destroy();
-        $data = Data::all()->where("protocolDelay", '!=', 0);
-        return response()->json(compact('data'));
-    }
 
     public function seen(){
         $this->destroy();

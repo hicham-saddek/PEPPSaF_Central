@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Data;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -23,7 +22,6 @@ class DataController extends Controller
         $data = Data::where("seen", false)->get($this->important_fields);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));
-        return Data::paginate();
     }
 
     public function seen()
@@ -31,7 +29,6 @@ class DataController extends Controller
         $this->destroy();
         $data = Data::where("seen", true)->get($this->important_fields);
         return response()->json(compact('data'));
-        return Data::paginate();
     }
 
     public function all()
@@ -39,7 +36,6 @@ class DataController extends Controller
         $this->destroy();
         $data = Data::paginate(15, $this->important_fields);
         return response()->json(compact('data'));
-        return Data::paginate();
     }
 
     /**
