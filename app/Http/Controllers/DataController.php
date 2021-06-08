@@ -10,14 +10,34 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
-    /**
-     * @return Data[]|Collection
-     */
-    public function index()
+    protected array $important_fields = [
+            "identifier", "namespace", "value", "hostname", 
+            "arrived_at", "sent_at", "received_at", "over", "name"
+        ];
+
+    protected int $max_life = 1;
+
+    public function unseen()
     {
         $this->destroy();
-        $data = Data::where("seen", false)->get();
+        $data = Data::where("seen", false)->get($this->important_fields);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
+        return response()->json(compact('data'));
+        return Data::paginate();
+    }
+
+    public function seen()
+    {
+        $this->destroy();
+        $data = Data::where("seen", true)->get($this->important_fields);
+        return response()->json(compact('data'));
+        return Data::paginate();
+    }
+
+    public function all()
+    {
+        $this->destroy();
+        $data = Data::paginate(15, $this->important_fields);
         return response()->json(compact('data'));
         return Data::paginate();
     }
@@ -28,11 +48,9 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'data' => ['required']
-        ])["data"];
-        $data = json_decode($data, true);
-        return response()->json(['data' => Data::create($data)->toArray()]);
+        return response()->json(['data' => Data::create(json_decode($request->validate([
+                'data' => ['required']
+            ])["data"], true))->toArray()]);
     }
 
     /**
@@ -42,7 +60,7 @@ class DataController extends Controller
      */
     public function destroy(): bool
     {
-        Data::query()->where("received_at", '<=', now()->subMinutes(1))->delete();
+        Data::query()->where("received_at", '<=', now()->subMinutes($this->max_life))->delete();
         return true;
     }
 }
