@@ -18,11 +18,12 @@ class CreateDataTable extends Migration
             $table->string("name");
             $table->boolean("value");
             $table->string("hostname");
+            $table->string("over");
             $table->integer("namespace");
             $table->integer("identifier");
-            $table->timestamp("arrived_at");
-            $table->timestamp("sent_at");
-            $table->timestamp("received_at")->default("CURRENT_TIMESTAMP");
+            $table->datetime("arrived_at");
+            $table->datetime("sent_at");
+            $table->datetime("received_at");
             $table->timestamps();
             $table->softDeletes();
         });
