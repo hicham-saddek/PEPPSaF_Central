@@ -3,7 +3,14 @@
 namespace App\Http\Controllers;
 use App\Models\Data;
 
-class NotCalculatedDataController extends Controller{
+class NotCalculatedDataController extends Controller
+{
+    protected array $important_fields = [
+            "identifier", "namespace", "value", "hostname", 
+            "arrived_at", "sent_at", "received_at", "over", "name"
+        ];
+
+    protected int $max_life = 1;
     
     public function all(){
         $this->destroy();
