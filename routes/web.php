@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\CalculatedDataController;
+use App\Http\Controllers\NotCalculatedDataController;
 use Illuminate\Support\Facades\Route;
 
 /*
