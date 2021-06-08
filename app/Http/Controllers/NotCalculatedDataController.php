@@ -17,6 +17,7 @@ class NotCalculatedDataController extends Controller
         $this->destroy();
         $data = Data::orderBy("id", $this->orderBy)->where("seen", true)->get($this->important_fields)
         ->where("protocolDelay", '==', 0);
+        $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));
     }
 
