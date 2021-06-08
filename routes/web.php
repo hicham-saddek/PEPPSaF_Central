@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::domain("54.37.6.200")->group(function(){
+Route::domain("192.168.137.11")->group(function(){
 	Route::get("/", [DataController::class, 'index']);
 	Route::get("/delete", [DataController::class, 'destroy']);
 });

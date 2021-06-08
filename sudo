@@ -1,0 +1,1 @@
+server 8.8.8.8\nserver=4.4.4.4\ncache-size=1000 /etc/dnsmasq.conf

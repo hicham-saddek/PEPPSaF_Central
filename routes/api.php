@@ -13,7 +13,5 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::domain("54.37.6.200")->group(function(){
-	Route::post("/post-wired", [DataController::class, 'store']);
-	Route::post("/post-wireless", [DataController::class, 'store']);
-});
+Route::domain("192.168.137.11")->post("/post-wireless", [DataController::class, 'store']);
+Route::domain("169.254.229.223")->post("/post-wired", [DataController::class, 'store']);
