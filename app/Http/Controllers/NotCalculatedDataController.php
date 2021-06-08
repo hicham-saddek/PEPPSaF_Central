@@ -5,6 +5,7 @@ use App\Models\Data;
 
 class NotCalculatedDataController extends Controller
 {
+    protected string $orderBy = "desc";
     protected array $important_fields = [
             "identifier", "namespace", "value", "hostname", 
             "arrived_at", "sent_at", "received_at", "over", "name"
@@ -14,14 +15,14 @@ class NotCalculatedDataController extends Controller
 
     public function seen(){
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->where("seen", true)->get($this->important_fields)
+        $data = Data::orderBy("id", $this->orderBy)->where("seen", true)->get($this->important_fields)
         ->where("protocolDelay", '==', 0);
         return response()->json(compact('data'));
     }
 
     public function unseen(){
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->where("seen", false)->paginate(15, $this->important_fields)
+        $data = Data::orderBy("id", $this->orderBy)->where("seen", false)->paginate(15, $this->important_fields)
         ->where("protocolDelay", '==', 0);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));

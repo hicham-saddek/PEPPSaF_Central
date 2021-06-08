@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
+    protected string $orderBy = "desc";
     protected array $important_fields = [
             "identifier", "namespace", "value", "hostname", 
             "arrived_at", "sent_at", "received_at", "over", "name"
@@ -19,7 +20,7 @@ class DataController extends Controller
     public function unseen()
     {
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->where("seen", false)->get($this->important_fields);
+        $data = Data::orderBy("id", $this->orderBy)->where("seen", false)->get($this->important_fields);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));
     }
@@ -27,21 +28,21 @@ class DataController extends Controller
     public function seen()
     {
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->where("seen", true)->get($this->important_fields);
+        $data = Data::orderBy("id", $this->orderBy)->where("seen", true)->get($this->important_fields);
         return response()->json(compact('data'));
     }
 
     public function all()
     {
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->take(20)->get($this->important_fields);
+        $data = Data::orderBy("id", $this->orderBy)->take(20)->get($this->important_fields);
         return response()->json(compact('data'));
     }
 
     public function take(int $take = 1)
     {
         $this->destroy();
-        $data = Data::orderBy("id", "asc")->where('seen', false)->take($take)->get($this->important_fields);
+        $data = Data::orderBy("id", $this->orderBy)->where('seen', false)->take($take)->get($this->important_fields);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));
     }
