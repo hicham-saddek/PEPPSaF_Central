@@ -25,12 +25,10 @@ Route::domain("192.168.137.11")->group(function(){
 	Route::prefix("calculated")->group(function(){
 		Route::get("/unseen", [CalculatedDataController::class, "unseen"]);
 		Route::get("/seen", [CalculatedDataController::class, "seen"]);
-		Route::get("/all", [CalculatedDataController::class, "all"]);
 	});
 
 	Route::prefix("not-calculated")->group(function(){
 		Route::get("/unseen", [NotCalculatedDataController::class, "unseen"]);
 		Route::get("/seen", [NotCalculatedDataController::class, "seen"]);
-		Route::get("/all", [NotCalculatedDataController::class, "all"]);
 	});
 });
