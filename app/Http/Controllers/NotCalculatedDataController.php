@@ -11,7 +11,7 @@ class NotCalculatedDataController extends Controller
             "arrived_at", "sent_at", "received_at", "over", "name"
         ];
 
-    protected int $max_life = 1;
+    protected int $max_life = 4;
 
     public function seen(){
         $this->destroy();
@@ -31,7 +31,7 @@ class NotCalculatedDataController extends Controller
 
     public function destroy(): bool
     {
-        Data::query()->where("received_at", '<=', now()->subMinutes($this->max_life))->delete();
+        Data::query()->where("received_at", '<=', now()->subSeconds($this->max_life))->delete();
         return true;
     }
 }
