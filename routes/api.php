@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::domain("192.168.137.11")->post("/post-wireless", [DataController::class, 'store']);
-Route::domain("169.254.229.223")->post("/post-wired", [DataController::class, 'store']);
+Route::domain("192.168.3.27")->post("/post-wired", [DataController::class, 'store']);
