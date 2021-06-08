@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [DataController::class, 'index'])
-    ->domain("visual.central.peppsaf");
-Route::delete("/delete-data", [DataController::class, 'destroy'])
-    ->domain('visual.central.peppsaf');
+Route::domain("192.168.137.11")->group(function(){
+	Route::get("/", [DataController::class, 'index']);
+	Route::get("/delete", [DataController::class, 'destroy']);
+});
