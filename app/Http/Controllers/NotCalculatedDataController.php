@@ -14,14 +14,14 @@ class NotCalculatedDataController extends Controller
 
     public function seen(){
         $this->destroy();
-        $data = Data::where("seen", true)->get($this->important_fields)
+        $data = Data::orderBy("id", "asc")->where("seen", true)->get($this->important_fields)
         ->where("protocolDelay", '==', 0);
         return response()->json(compact('data'));
     }
 
     public function unseen(){
         $this->destroy();
-        $data = Data::where("seen", false)->paginate(15, $this->important_fields)
+        $data = Data::orderBy("id", "asc")->where("seen", false)->paginate(15, $this->important_fields)
         ->where("protocolDelay", '==', 0);
         $data->each(fn(Data $data) => $data->markAsSeen()->save());
         return response()->json(compact('data'));
