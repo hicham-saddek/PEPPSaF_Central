@@ -15,7 +15,7 @@ class Data extends Model
 
     protected $fillable = [
         "name", "value", "hostname", "namespace", "identifier",
-        "arrived_at", "sent_at", "received_at", "over"
+        "arrived_at", "sent_at", "received_at", "over", "seen"
     ];
 
     protected $casts = [
@@ -47,5 +47,11 @@ class Data extends Model
         $sibling = $builder->first();
         if(!is_null($sibling)) return (new Carbon($sibling->received_at))->diffInMicroSeconds(new Carbon($this->received_at));
         return "Not received yet";
+    }
+
+    public function markAsSeen(bool $seen = true)
+    {
+        $this->seen = $seen;
+        return $this;
     }
 }

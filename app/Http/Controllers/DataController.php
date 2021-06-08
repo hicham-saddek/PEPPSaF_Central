@@ -16,7 +16,9 @@ class DataController extends Controller
     public function index()
     {
         $this->destroy();
-        return response()->json(Data::paginate(5, ["identifier", "namespace", "value", "hostname", "arrived_at", "sent_at", "received_at", "over", "name"]));
+        $data = Data::where("seen", false)->get();
+        $data->each(fn(Data $data) => $data->markAsSeen()->save());
+        return response()->json(compact('data'));
         return Data::paginate();
     }
 
